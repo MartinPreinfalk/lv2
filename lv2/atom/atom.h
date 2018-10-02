@@ -70,6 +70,38 @@
 extern "C" {
 #endif
 
+static const uint32_t lv2_atom_Atom          = 0;
+static const uint32_t lv2_atom_AtomPort      = 0;
+static const uint32_t lv2_atom_Blank         = 0;
+static const uint32_t lv2_atom_Bool          = 0;
+static const uint32_t lv2_atom_Chunk         = 0;
+static const uint32_t lv2_atom_Double        = 0;
+static const uint32_t lv2_atom_Event         = 0;
+static const uint32_t lv2_atom_Float         = 0;
+static const uint32_t lv2_atom_Int           = 0;
+static const uint32_t lv2_atom_Literal       = 0;
+static const uint32_t lv2_atom_Long          = 0;
+static const uint32_t lv2_atom_Number        = 0;
+static const uint32_t lv2_atom_Object        = 0;
+static const uint32_t lv2_atom_Path          = 0;
+static const uint32_t lv2_atom_Property      = 0;
+static const uint32_t lv2_atom_Resource      = 0;
+static const uint32_t lv2_atom_Sequence      = 0;
+static const uint32_t lv2_atom_Sound         = 0;
+static const uint32_t lv2_atom_String        = 0;
+static const uint32_t lv2_atom_Tuple         = 0;
+static const uint32_t lv2_atom_URI           = 0;
+static const uint32_t lv2_atom_URID          = 0;
+static const uint32_t lv2_atom_Vector        = 0;
+static const uint32_t lv2_atom_atomTransfer  = 0;
+static const uint32_t lv2_atom_beatTime      = 0;
+static const uint32_t lv2_atom_bufferType    = 0;
+static const uint32_t lv2_atom_childType     = 0;
+static const uint32_t lv2_atom_eventTransfer = 0;
+static const uint32_t lv2_atom_frameTime     = 0;
+static const uint32_t lv2_atom_supports      = 0;
+static const uint32_t lv2_atom_timeUnit      = 0;
+
 /** @cond */
 /** This expression will fail to compile if double does not fit in 64 bits. */
 typedef char lv2_atom_assert_double_fits_in_64_bits[

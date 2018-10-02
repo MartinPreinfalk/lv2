@@ -39,19 +39,6 @@
 
 #define EG_METRO_URI "http://lv2plug.in/plugins/eg-metro"
 
-typedef struct {
-	LV2_URID atom_Blank;
-	LV2_URID atom_Float;
-	LV2_URID atom_Object;
-	LV2_URID atom_Path;
-	LV2_URID atom_Resource;
-	LV2_URID atom_Sequence;
-	LV2_URID time_Position;
-	LV2_URID time_barBeat;
-	LV2_URID time_beatsPerMinute;
-	LV2_URID time_speed;
-} MetroURIs;
-
 static const double attack_s = 0.005;
 static const double decay_s  = 0.075;
 
@@ -81,7 +68,6 @@ typedef enum {
 typedef struct {
 	LV2_URID_Map*  map;     // URID map feature
 	LV2_Log_Logger logger;  // Logger API
-	MetroURIs      uris;    // Cache of mapped URIDs
 
 	struct {
 		LV2_Atom_Sequence* control;
@@ -169,20 +155,6 @@ instantiate(const LV2_Descriptor*     descriptor,
 		return NULL;
 	}
 
-	// Map URIS
-	MetroURIs* const    uris  = &self->uris;
-	LV2_URID_Map* const map   = self->map;
-	uris->atom_Blank          = map->map(map->handle, LV2_ATOM__Blank);
-	uris->atom_Float          = map->map(map->handle, LV2_ATOM__Float);
-	uris->atom_Object         = map->map(map->handle, LV2_ATOM__Object);
-	uris->atom_Path           = map->map(map->handle, LV2_ATOM__Path);
-	uris->atom_Resource       = map->map(map->handle, LV2_ATOM__Resource);
-	uris->atom_Sequence       = map->map(map->handle, LV2_ATOM__Sequence);
-	uris->time_Position       = map->map(map->handle, LV2_TIME__Position);
-	uris->time_barBeat        = map->map(map->handle, LV2_TIME__barBeat);
-	uris->time_beatsPerMinute = map->map(map->handle, LV2_TIME__beatsPerMinute);
-	uris->time_speed          = map->map(map->handle, LV2_TIME__speed);
-
 	// Initialise instance fields
 	self->rate       = rate;
 	self->bpm        = 120.0f;
@@ -265,24 +237,22 @@ play(Metro* self, uint32_t begin, uint32_t end)
 static void
 update_position(Metro* self, const LV2_Atom_Object* obj)
 {
-	const MetroURIs* uris = &self->uris;
-
 	// Received new transport position/speed
 	LV2_Atom *beat = NULL, *bpm = NULL, *speed = NULL;
 	lv2_atom_object_get(obj,
-	                    uris->time_barBeat, &beat,
-	                    uris->time_beatsPerMinute, &bpm,
-	                    uris->time_speed, &speed,
+	                    lv2_time_barBeat,        &beat,
+	                    lv2_time_beatsPerMinute, &bpm,
+	                    lv2_time_speed,          &speed,
 	                    NULL);
-	if (bpm && bpm->type == uris->atom_Float) {
+	if (bpm && bpm->type == lv2_atom_Float) {
 		// Tempo changed, update BPM
 		self->bpm = ((LV2_Atom_Float*)bpm)->body;
 	}
-	if (speed && speed->type == uris->atom_Float) {
+	if (speed && speed->type == lv2_atom_Float) {
 		// Speed changed, e.g. 0 (stop) to 1 (play)
 		self->speed = ((LV2_Atom_Float*)speed)->body;
 	}
-	if (beat && beat->type == uris->atom_Float) {
+	if (beat && beat->type == lv2_atom_Float) {
 		// Received a beat position, synchronise
 		// This hard sync may cause clicks, a real plugin would be more graceful
 		const float frames_per_beat = 60.0f / self->bpm * self->rate;
@@ -302,8 +272,7 @@ update_position(Metro* self, const LV2_Atom_Object* obj)
 static void
 run(LV2_Handle instance, uint32_t sample_count)
 {
-	Metro*           self = (Metro*)instance;
-	const MetroURIs* uris = &self->uris;
+	Metro* self = (Metro*)instance;
 
 	// Work forwards in time frame by frame, handling events as we go
 	const LV2_Atom_Sequence* in     = self->ports.control;
@@ -317,10 +286,10 @@ run(LV2_Handle instance, uint32_t sample_count)
 
 		// Check if this event is an Object
 		// (or deprecated Blank to tolerate old hosts)
-		if (ev->body.type == uris->atom_Object ||
-		    ev->body.type == uris->atom_Blank) {
+		if (ev->body.type == lv2_atom_Object ||
+		    ev->body.type == lv2_atom_Blank) {
 			const LV2_Atom_Object* obj = (const LV2_Atom_Object*)&ev->body;
-			if (obj->body.otype == uris->time_Position) {
+			if (obj->body.otype == lv2_time_Position) {
 				// Received position information, update
 				update_position(self, obj);
 			}

@@ -29,6 +29,8 @@
 #ifndef LV2_TIME_H
 #define LV2_TIME_H
 
+#include <stdint.h>
+
 #define LV2_TIME_URI    "http://lv2plug.in/ns/ext/time"  ///< http://lv2plug.in/ns/ext/time
 #define LV2_TIME_PREFIX LV2_TIME_URI "#"                 ///< http://lv2plug.in/ns/ext/time#
 
@@ -45,6 +47,28 @@
 #define LV2_TIME__frame           LV2_TIME_PREFIX "frame"            ///< http://lv2plug.in/ns/ext/time#frame
 #define LV2_TIME__framesPerSecond LV2_TIME_PREFIX "framesPerSecond"  ///< http://lv2plug.in/ns/ext/time#framesPerSecond
 #define LV2_TIME__speed           LV2_TIME_PREFIX "speed"            ///< http://lv2plug.in/ns/ext/time#speed
+
+#ifdef __cplusplus
+extern "C" {
+#endif
+
+static const uint32_t lv2_time_Time            = 0;
+static const uint32_t lv2_time_Position        = 0;
+static const uint32_t lv2_time_Rate            = 0;
+static const uint32_t lv2_time_position        = 0;
+static const uint32_t lv2_time_barBeat         = 0;
+static const uint32_t lv2_time_bar             = 0;
+static const uint32_t lv2_time_beat            = 0;
+static const uint32_t lv2_time_beatUnit        = 0;
+static const uint32_t lv2_time_beatsPerBar     = 0;
+static const uint32_t lv2_time_beatsPerMinute  = 0;
+static const uint32_t lv2_time_frame           = 0;
+static const uint32_t lv2_time_framesPerSecond = 0;
+static const uint32_t lv2_time_speed           = 0;
+
+#ifdef __cplusplus
+}  /* extern "C" */
+#endif
 
 /**
    @}
