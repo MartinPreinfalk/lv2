@@ -31,6 +31,7 @@
 #include <stdint.h>
 
 #include "lv2/core/lv2.h"
+#include "lv2/urid/urid.h"
 
 #define LV2_UI_URI    "http://lv2plug.in/ns/extensions/ui"  ///< http://lv2plug.in/ns/extensions/ui
 #define LV2_UI_PREFIX LV2_UI_URI "#"                        ///< http://lv2plug.in/ns/extensions/ui#
@@ -342,6 +343,39 @@ typedef struct _LV2UI_Touch {
 	              uint32_t             port_index,
 	              bool                 grabbed);
 } LV2UI_Touch;
+
+/**
+   A feature to request a new parameter value from the host.
+*/
+typedef struct _LV2UI_Request_Parameter {
+	/**
+	   Pointer to opaque data which must be passed to request().
+	*/
+	LV2UI_Feature_Handle handle;
+
+	/**
+	   Request a value for a parameter from the host.  The main use case for
+	   this is a UI requesting a file path from the host, but conceptually it
+	   can be used to request any parameter value.
+
+	   This function returns immediately, and the return value indicates
+	   whether the host can fulfill the request.  The host may notify the
+	   plugin about any new parameter value, for example when a file is
+	   selected by the user, via the usual mechanism.  Typically, the host will
+	   send a message (using the atom and path extensions) to the plugin that
+	   sets the new parameter value, and the plugin will notify the UI via a
+	   message as usual for any other parameter change.
+
+	   The can must determine details about the property, like the value type,
+	   from the plugin data.
+
+	   @param handle The handle field of this struct.
+	   @param key The URID of the parameter.
+	   @return 0 on success, non-zero on error.
+	*/
+	uint32_t (*request)(LV2UI_Feature_Handle handle,
+	                    LV2_URID             key);
+} LV2UI_Request_Parameter;
 
 /**
    UI Idle Interface (LV2_UI__idleInterface)
