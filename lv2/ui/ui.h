@@ -58,6 +58,7 @@
 #define LV2_UI__portNotification LV2_UI_PREFIX "portNotification"  ///< http://lv2plug.in/ns/extensions/ui#portNotification
 #define LV2_UI__portSubscribe    LV2_UI_PREFIX "portSubscribe"     ///< http://lv2plug.in/ns/extensions/ui#portSubscribe
 #define LV2_UI__protocol         LV2_UI_PREFIX "protocol"          ///< http://lv2plug.in/ns/extensions/ui#protocol
+#define LV2_UI__requestParameter LV2_UI_PREFIX "requestParameter"  ///< http://lv2plug.in/ns/extensions/ui#requestParameter
 #define LV2_UI__floatProtocol    LV2_UI_PREFIX "floatProtocol"     ///< http://lv2plug.in/ns/extensions/ui#floatProtocol
 #define LV2_UI__peakProtocol     LV2_UI_PREFIX "peakProtocol"      ///< http://lv2plug.in/ns/extensions/ui#peakProtocol
 #define LV2_UI__resize           LV2_UI_PREFIX "resize"            ///< http://lv2plug.in/ns/extensions/ui#resize
